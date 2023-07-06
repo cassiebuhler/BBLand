@@ -1,0 +1,16 @@
+METAPOPULATION MODEL results; Date=7/6/2023 Time=17:26:08
+===========================================================
+cont150_0
+
+
+
+
+  116 populations (116 included in summation)
+ 1000 replications;  Duration = 100
+===========================================================
+
+Terminal percent decline
+
+Percent decline  Probability     95% confidence interval
+       100       1.0000          0.9720   1.0000
+         0       1.0000          0.9720   1.0000

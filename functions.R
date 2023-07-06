@@ -60,6 +60,8 @@ convertASCtoPTC <- function(windowsPath, path,landscapeType,n,seed)
   distanceType <- "Edge to edge"
   
   pathToASCfile <- file.path(windowsPath,ascFile)
+  pathToASCfile<- gsub("/", "\\\\", pathToASCfile)
+  
   inputMap_color <- "Red"
   disp_a <- "0.50"
   disp_b <- "0.80"
@@ -110,7 +112,7 @@ convertASCtoPTC <- function(windowsPath, path,landscapeType,n,seed)
   catn(paste(cor_a, cor_b, cor_c,sep = ","))
   cat("-End of file-")
   sink()
-  file.show(ptcFile)
+  # file.show(ptcFile)
   
   closeAllConnections()
 }
@@ -119,10 +121,13 @@ convertASCtoPTC <- function(windowsPath, path,landscapeType,n,seed)
 
 convertPTCtoPDY <- function(wcontPath,wpath, path,n,seed)
 {
+
+  
   title <- paste("both",n,"_",seed,sep = "")
   pdyFile <- file.path(path,paste(title,".pdy",sep = ""))
 
   mpFile <- file.path(wpath,paste(title,".mp",sep = ""))
+  mpFile<- gsub("/", "\\\\", mpFile)
   t1 <- 1
   t2 <- 100
   kFile<- "pop"
@@ -130,6 +135,9 @@ convertPTCtoPDY <- function(wcontPath,wpath, path,n,seed)
   sFile<- "pop"
   binFile <- file.path(wpath,paste("binary",n,"_",seed,".ptc",sep = ""))
   contFile <- file.path(wcontPath,paste("cont",n,"_",seed,".ptc",sep = ""))
+  
+  binFile<- gsub("/", "\\\\", binFile)
+  contFile<- gsub("/", "\\\\", contFile)
   change1 <- "same until next"
   change2<- "linear"
   
@@ -153,14 +161,25 @@ convertPTCtoPDY <- function(wcontPath,wpath, path,n,seed)
   catn(change2)
   catn(change2)
   sink()
-  file.show(pdyFile)
+  # file.show(pdyFile)
   closeAllConnections()
   
 }
 
 
-getBatchFile <- function(n,seed,path)
+getBatchFile <- function(n,seed,path,wiPath)
 {
+  outPath <- file.path(path,"output")
+  ifelse(!dir.exists(outPath), dir.create(outPath), FALSE)
+  
+  outMetaPath<- file.path(outPath,"metapop")
+  ifelse(!dir.exists(outMetaPath), dir.create(outMetaPath), FALSE)
+  outHabPath<- file.path(outPath,"habdyn")
+  ifelse(!dir.exists(outHabPath), dir.create(outHabPath), FALSE)
+  
+  wiPath_meta <- file.path(wiPath,"output","metapop")
+  wiPath_hab <- file.path(wiPath,"output","habdyn")
+  
   
   batFile <- paste("batch",n,"_",seed,".BAT",sep = "")
   batPath <- file.path(path,batFile)
@@ -171,17 +190,31 @@ getBatchFile <- function(n,seed,path)
   RAMAS_spatial <- r"("C:\Program Files\RAMAS Multispecies 6\SpatialData.exe")"
   RAMAS_hab <- r"("C:\Program Files\RAMAS Multispecies 6\Habdyn.exe")"
   RAMAS_metapop <- r"("C:\Program Files\RAMAS Multispecies 6\Metapop.exe")"
-  
+  RAMAS_files <- r"("C:\Users\cb3452\Documents\RAMAS Model Files\*.*")"
   line1<- paste('START /WAIT "title"',RAMAS_spatial,binPTCFile,'/RUN=YES /TEX')
   line2<- paste('START /WAIT "title"',RAMAS_hab,bothPDYfile,'/RUN=YES /TEX')
-  line3<- paste('START /WAIT "title"',RAMAS_spatial,bothMPfile,'/RUN=YES /TEX')
+  line3<- paste('START /WAIT "title"',RAMAS_metapop,bothMPfile,'/RUN=YES /TEX')
+  wiPath_meta<- gsub("/", "\\\\", wiPath_meta)
+  wiPath_meta<- paste0("\"", wiPath_meta, "\"")
+
+  line4 <- paste("move",RAMAS_files,wiPath_meta)
+
+  wiPath_hab<- gsub("/", "\\\\", wiPath_hab)
+  wiPath_hab<- paste0("\"", wiPath_hab, "\"")
+  
+  line5 <- paste("move *.KCH",wiPath_hab)
+  line6 <- paste("move *.DCH",wiPath_hab)
   
   sink(batPath)
   catn(line1)
   catn(line2)
   catn(line3)
+  catn(line4)
+  catn(line5)
+  catn(line6)
+  
   sink()
-  file.show(batPath)
+  # file.show(batPath)
   closeAllConnections()
 }
 
@@ -198,6 +231,6 @@ getContBatchFile <- function(n,seed,path)
   sink(batPath)
   catn(line)
   sink()
-  file.show(batPath)
+  # file.show(batPath)
   closeAllConnections()
 }

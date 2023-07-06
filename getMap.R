@@ -1,6 +1,7 @@
 library(raster)
 
-getMap <- function(n,seed,configuration){
+getMap <- function(n,seed,configFile){
+  
   
   #### SETTING PATHS
   ## check machine 
@@ -15,8 +16,9 @@ getMap <- function(n,seed,configuration){
   windowsPath <- r"(C:/Users/cb3452)"
   
   ## set working directory 
+  baseWindowsPath <- r"(OneDrive - Drexel University/bbland/bbland-github)"
+  windowsPath<- file.path(windowsPath,baseWindowsPath)
   basePath <- r"(OneDrive-DrexelUniversity/bbland/bbland-github)"
-  windowsPath<- file.path(windowsPath,basePath)
   
   #base path - the machine I'm on 
   basePath <- file.path(OS,basePath)
@@ -48,13 +50,23 @@ getMap <- function(n,seed,configuration){
     rr_bin<- getLandscape(n,as.numeric(seed),1,NULL)
   }
   else{
+  configFile <- file.path(iterPath,configFile)
+  s<- read.csv(configFile,header = FALSE)
+  configuration<- as.numeric(t(s))
   rr_bin<- getLandscape(n,as.numeric(seed),3,configuration)
   }
   writeRaster(rr_bin, file.path(iterPath,paste("binary",n,"_",seed,".asc",sep = "")), format="ascii", overwrite = T)
   convertASCtoPTC(wiPath,iterPath,"binary",n,seed)
   convertPTCtoPDY(wnPath, wiPath,iterPath,n,seed)
   
-  getBatchFile(n,seed,iterPath)
+  getBatchFile(n,seed,iterPath,wiPath)
 }
 
-getMap(n = 10,seed = 0,configuration = NULL)
+
+args = commandArgs(trailingOnly=TRUE)
+print(args)
+n = as.numeric(args[1])
+seed = as.numeric(args[2])
+configFile = args[3]
+
+getMap(n,seed,configFile)

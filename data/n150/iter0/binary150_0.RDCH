@@ -1,0 +1,27 @@
+file format : IDRISI Raster A.1
+file title  : binary150_0
+data type   : real
+file type   : binary
+columns     : 150
+rows        : 150
+ref. system : plane
+ref. units  : m
+unit dist.  : 1.0
+min. X      : 0
+max. X      : 150000.00
+min. Y      : 0
+max. Y      : 150000.00
+pos'n error : unknown
+resolution  : 1000.00
+min. value  : 0.00000
+max. value  : 1.00000
+display min : 0.00000
+display max : 1.00000
+value units : unspecified
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 0
+comment     : Habitat suitability map
+lineage     : Created by RAMAS GIS 4.1 (Spatial data)
+lineage     : RAMAS GIS results: 7/6/2023 5:25:57 PM
