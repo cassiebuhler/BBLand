@@ -1,2 +1,2 @@
-# bbland
-Black-box optimization for reserve design in biodiversity conservation
+# Black-box optimization for reserve design in biodiversity conservation (BBLand)
+
