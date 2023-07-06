@@ -1,0 +1,41 @@
+Landscape input file (4.1) map=ˇ
+binary150_0
+
+
+
+
+1.00000
+[binary150_0]
+
+0.50000
+1.00000
+Blue,False
+2
+ths/25
+1.03
+20*ahs
+1
+1
+
+
+0
+1
+0
+1
+No
+
+Edge to edge
+1
+binary150_0
+C:/Users/cb3452/OneDrive-DrexelUniversity/bbland/bbland-github/data/n150/iter0/binary150_0.asc
+ARC/INFO,ConstantMap
+Red
+150
+,0.000,0.000,,CE,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,
+Migration
+TRUE
+0.50,0.80,1.00,5.00
+Correlation
+TRUE
+0.80,2.00,1.00
+-End of file-
