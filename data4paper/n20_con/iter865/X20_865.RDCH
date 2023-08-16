@@ -1,0 +1,27 @@
+file format : IDRISI Raster A.1
+file title  : X20_865
+data type   : real
+file type   : binary
+columns     : 20
+rows        : 20
+ref. system : plane
+ref. units  : m
+unit dist.  : 1.0
+min. X      : 0
+max. X      : 20000.00
+min. Y      : 0
+max. Y      : 20000.00
+pos'n error : unknown
+resolution  : 1000.00
+min. value  : 0.00000
+max. value  : 0.99268
+display min : 0.00000
+display max : 0.99268
+value units : unspecified
+value error : unknown
+flag value  : none
+flag def'n  : none
+legend cats : 0
+comment     : Habitat suitability map
+lineage     : Created by RAMAS GIS 4.1 (Spatial data)
+lineage     : RAMAS GIS results: 8/5/2023 1:23:44 AM

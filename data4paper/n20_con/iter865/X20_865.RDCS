@@ -1,0 +1,71 @@
+file format : IDRISI Raster A.1
+file title  : X20_865
+data type   : integer
+file type   : binary
+columns     : 20
+rows        : 20
+ref. system : plane
+ref. units  : m
+unit dist.  : 1.0
+min. X      : 0
+max. X      : 20000.00
+min. Y      : 0
+max. Y      : 20000.00
+pos'n error : unknown
+resolution  : 1000.00
+min. value  : 0
+max. value  : 43
+display min : 0
+display max : 43
+value units : unspecified
+value error : unknown
+flag value  : 0
+flag def'n  : background
+legend cats : 44
+code      0 : No Habitat
+code      1 : Pop. 1
+code      2 : Pop. 2
+code      3 : Pop. 3
+code      4 : Pop. 4
+code      5 : Pop. 5
+code      6 : Pop. 6
+code      7 : Pop. 7
+code      8 : Pop. 8
+code      9 : Pop. 9
+code     10 : Pop. 10
+code     11 : Pop. 11
+code     12 : Pop. 12
+code     13 : Pop. 13
+code     14 : Pop. 14
+code     15 : Pop. 15
+code     16 : Pop. 16
+code     17 : Pop. 17
+code     18 : Pop. 18
+code     19 : Pop. 19
+code     20 : Pop. 20
+code     21 : Pop. 21
+code     22 : Pop. 22
+code     23 : Pop. 23
+code     24 : Pop. 24
+code     25 : Pop. 25
+code     26 : Pop. 26
+code     27 : Pop. 27
+code     28 : Pop. 28
+code     29 : Pop. 29
+code     30 : Pop. 30
+code     31 : Pop. 31
+code     32 : Pop. 32
+code     33 : Pop. 33
+code     34 : Pop. 34
+code     35 : Pop. 35
+code     36 : Pop. 36
+code     37 : Pop. 37
+code     38 : Pop. 38
+code     39 : Pop. 39
+code     40 : Pop. 40
+code     41 : Pop. 41
+code     42 : Pop. 42
+code     43 : Pop. 43
+comment     : Habitat patches
+lineage     : Created by RAMAS GIS 4.1 (Spatial data)
+lineage     : RAMAS GIS results: 8/5/2023 1:23:44 AM

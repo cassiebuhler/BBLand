@@ -1,0 +1,44 @@
+n: 10
+Model: Unconstrained
+
+###RAMAS - SPATIAL DATA###
+*HABITAT RELATIONSHIPS*
+Habitat suitabilitiy function: [B10] (aka the file B10.ASC or X10_iter#.ASC for each iteration) 
+Habitat suitability threshold for patches: 0.500
+Neighborhood distance (cells): 1.00
+
+*LINK TO METAPOPULATION*
+Carrying capacity: ths*4
+Maximum growth (Rmax): 1.5
+Initial abundance: ths*2
+Relative fecundity: max(1, ths*1.2)
+Relative survival: max(1, ths*1.2)
+Distance: Edge to Edge
+
+*DEFAULT POPULATION*
+Local threshold: 0.00 (this is when a population is considered extinct)
+Density dependence type: Scramble
+
+*DISPERSAL*
+a: 0.5
+b: 0.8
+c: 1.0
+Dmax: 1.0
+
+*CORRELATION*
+a: 0.8
+b: 2.0
+c: 1.0
+
+###RAMAS - HABITAT DYNAMICS###
+*HABITAT CHANGES*
+B10.ptc: Time step = 1
+Change K, F, S: same until next
+Z10_iter#.ptc: Time step = 10
+Habitat B for first 10 years then change to habitat Z for remaining 90 years. 
+
+###RAMAS - METAPOP###
+*GENERAL INFORMATION*
+Replications: 1000
+Duration: 100
+One time step: 1 (years)

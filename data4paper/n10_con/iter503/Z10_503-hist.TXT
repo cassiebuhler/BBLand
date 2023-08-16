@@ -1,0 +1,37 @@
+C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\iter503\Z10_503.mp
+2
+1 C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\iter503\B10.ptc
+2 C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\iter503\X10_503.ptc
+iter Fyear Lyear patch new2old old2new
+ 1   0   8  1  0  0
+ 1   0   8  2  0  0
+ 1   0   8  3  0  0
+ 1   0   8  4  0  0
+ 1   0   8  5  0  0
+ 1   0   8  6  0  0
+ 1   0   8  7  0  0
+ 1   0   8  8  0  0
+ 1   0   8  9  0  0
+ 1   0   8 10  0  0
+ 1   0   8 11  0  0
+ 1   0   8 12  0  0
+ 1   0   8 13  0  0
+ 1   0   8 14  0  0
+ 1   0   8 15  0  0
+ 1   0   8 16  0  0
+ 2   9 500  1  3 13
+ 2   9 500  2  4 14
+ 2   9 500  3  5  1
+ 2   9 500  4  6  2
+ 2   9 500  5  7  3
+ 2   9 500  6  8  4
+ 2   9 500  7 10  5
+ 2   9 500  8 11  6
+ 2   9 500  9 13 15
+ 2   9 500 10 14  7
+ 2   9 500 11 12  8
+ 2   9 500 12 15 11
+ 2   9 500 13  1  9
+ 2   9 500 14  2 10
+ 2   9 500 15  9 12
+ 2   9 500 16 16 16

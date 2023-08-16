@@ -1,2 +1,7 @@
-# Black-box optimization for reserve design in biodiversity conservation (BBLand)
+# Decision-Making for Land Conservation: A Derivative-Free Optimization Framework with Nonlinear Inputs
 
+## CONTENTS
+
+## REQUIREMENTS
+
+## IMPLEMENTATION

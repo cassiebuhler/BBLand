@@ -1,6 +1,7 @@
 library(ggplot2)
 library(cowplot)
 library(RColorBrewer)
+library(raster)
 getRasterXY <- function(n,rast){
   r <- raster(xmn=0, xmx=n, ymn=0, ymx=n, ncol=n, nrow=n)
   p <- rasterToPolygons(r)
@@ -13,16 +14,16 @@ tightLayout <- function(g){
     g+
     theme_minimal()+
     theme(plot.margin=grid::unit(c(2,0,2,0), "mm"))+
-    theme(axis.title.x=element_text(size=10))+
-    theme(axis.title.y=element_text(size=10))+
-    theme(legend.title=element_text(size=10))+
+    theme(axis.title.x=element_text(size=9))+
+    theme(axis.title.y=element_text(size=9))+
+    theme(legend.title=element_text(size=9))+
     #theme(legend.spacing=grid::unit(c(0,0,0,0), "mm"))+
     theme(legend.margin=margin(t = 0,r=0,b=0,l=0, unit='cm'))+
-    theme(legend.text =element_text(size=10))+
-    theme(axis.text = element_text(size=10))+
+    theme(legend.text =element_text(size=9))+
+    theme(axis.text = element_text(size=9))+
     theme(legend.key.width = unit(2,"mm"))+
-    theme(legend.position = "bottom")+
-    theme(plot.title = element_text(hjust = 0.5,size = 10))+
+    #theme(legend.position = "bottom")+
+    theme(plot.title = element_text(hjust = 0.5,size = 9))+
     theme(legend.key=element_blank(),legend.title=element_blank())
   return(g_)
 }
@@ -57,13 +58,13 @@ getRasterPlot <- function(g,...){
   }
   return(new)
 }
-iter <- 1
-n<- 4
+iter <- 258
+n<- 10
 basePath <- r"(C:/Users/cb3452/OneDrive - Drexel University/bbland/bbland-github)"
 setwd(basePath)
 
-configPath <- file.path("data",file.path(paste("n",n,sep = "")),paste("iter",iter,sep = ""))
-nPath<- file.path("data",file.path(paste("n",n,sep = "")))
+configPath <- file.path("data",file.path(paste("n",n,"_con_v2_ths",sep = "")),paste("iter",iter,sep = ""))
+nPath<- file.path("data",file.path(paste("n",n,"_con_v2_ths",sep = "")))
 
 set.seed(0)
 baseMap <- runif(n*n,min=0,max=1)
@@ -76,13 +77,13 @@ B_ <- ggplot(B, aes(x, y, fill= layer)) +
 
 B_ <- getRasterPlot(B_)
 B_
-f1<- file.path(nPath,paste("baseMap_",n,".png",sep = ""))
+f1<- file.path(nPath,paste("B_",n,".png",sep = ""))
 ggsave(f1,width = 3,height = 2, unit = "in",dpi = 300)
 
 
 
 
-filePath <- file.path(configPath,paste("config",n,"_",iter,".txt",sep = ""))
+filePath <- file.path(configPath,paste("X",n,"_",iter,".txt",sep = ""))
 config <- read.csv(filePath,header = FALSE)
 config<- as.numeric(t(config))
 baseMap<- as.numeric(t(baseMap))
@@ -96,12 +97,12 @@ X_ <- ggplot(X, aes(x, y, fill= layer)) +
   ggtitle("Z")
 X_ <- getRasterPlot(X_)
 X_
-f2<- file.path(nPath,paste("config_",n,"_",iter,".png",sep = ""))
+f2<- file.path(nPath,paste("Z_",n,"_",iter,".png",sep = ""))
 ggsave(f2,width = 3,height = 2, unit = "in",dpi = 300)
 
 
 
-filePath <- file.path(configPath,paste("config",n,"_",iter,".txt",sep = ""))
+filePath <- file.path(configPath,paste("X",n,"_",iter,".txt",sep = ""))
 config <- read.csv(filePath,header = FALSE)
 config<- as.numeric(t(config))
 mask<- getRasterXY(n,config)
@@ -112,22 +113,28 @@ mask_ <- ggplot(mask, aes(x, y, fill= as.factor(layer))) +
   ggtitle("X")
 mask_ <- getRasterPlot(mask_)
 mask_
-f3<- file.path(nPath,paste("mask_",n,"_",iter,".png",sep = ""))
+f3<- file.path(nPath,paste("X_",n,"_",iter,".png",sep = ""))
 ggsave(f3,width = 3,height = 2, unit = "in",dpi = 300)
 
 
 
 baseMap<- as.numeric(t(baseMap))
 base <- rep(0, n*n)
-pop1_ind <- c(1,5,9,10,14)#just hard coding the patches in to number the populatiosn 
-pop2_ind<- c(4,7,8)
-pop3_ind <- c(16)
+pop1_ind <- c(1)#just hard coding the patches in to number the populatiosn 
+pop2_ind<- c(4,5,7,8,9,10,14,18,19,24)
+pop3_ind <- c(16,21,22)
+
 base[pop1_ind] <- rep(1,n*n)[pop1_ind]
 base[pop2_ind] <- rep(2,n*n)[pop2_ind]
 base[pop3_ind] <- rep(3,n*n)[pop3_ind]
 col<- c("#FFFFFF","#1B9E77", "#D95F02", "#7570B3")
 patchBase<- getRasterXY(n,base)
-patchBase$layer <- c("1","","","2","1","","2","2","1","1","","","","1","","3")
+pop_label <- rep("",n*n)
+pop_label[pop1_ind] <- "1"
+pop_label[pop2_ind] <- "2"
+pop_label[pop3_ind] <- "3"
+
+patchBase$layer <-pop_label
 patchBase$layer <- as.factor(patchBase$layer)
 patchBase_<- ggplot(patchBase, aes(x, y)) + 
   geom_tile(aes(fill=layer))+ 
@@ -138,30 +145,40 @@ patchBase_<- ggplot(patchBase, aes(x, y)) +
 patchBase_<- getRasterPlot(patchBase_,1)
 #patchBase_<- patchBase_+ theme(legend.position = "bottom")
 patchBase_
-f4<- file.path(nPath,paste("baseMap_patches",n,".png",sep = ""))
+f4<- file.path(nPath,paste("B_patches",n,".png",sep = ""))
 ggsave(f4,width = 3,height = 2, unit = "in",dpi = 300)
 
 
 
 
-basex <- rep(0, n*n)
-pop1_ind <- c(5,9,10,14)#just hard coding the patches in to number the populatiosn 
-pop2_ind<- c(7,8)
-basex[pop1_ind] <- rep(1,n*n)[pop1_ind]
-basex[pop2_ind] <- rep(2,n*n)[pop2_ind]
-col<- c("#FFFFFF","#1B9E77", "#D95F02")
-patchX<- getRasterXY(n,basex)
-patchX$layer <- c("","","","","1","","2","2","1","1","","","","1","","")
-patchX$layer <- as.factor(patchX$layer)
+base <- rep(0, n*n)
+pop1_ind <- c(1)#just hard coding the patches in to number the populatiosn 
+pop2_ind<- c(10)
+pop3_ind <- c(22)
+pop4_ind <- c(24)
+base[pop1_ind] <- rep(1,n*n)[pop1_ind]
+base[pop2_ind] <- rep(2,n*n)[pop2_ind]
+base[pop3_ind] <- rep(3,n*n)[pop3_ind]
+base[pop4_ind] <- rep(4,n*n)[pop3_ind]
 
+col<- c("#FFFFFF","#1B9E77", "#D95F02", "#7570B3","#E6AB02")
+patchX<- getRasterXY(n,base)
+pop_label <- rep("",n*n)
+pop_label[pop1_ind] <- "1"
+pop_label[pop2_ind] <- "2"
+pop_label[pop3_ind] <- "3"
+pop_label[pop4_ind] <- "4"
+
+patchX$layer <-pop_label
+patchX$layer <- as.factor(patchX$layer)
 patchX_<- ggplot(patchX, aes(x, y)) + 
   geom_tile(aes(fill=layer))+ 
-  scale_fill_manual("Pop",values = col,breaks=c("","1","2"))+
+  scale_fill_manual("Pop",values = col,breaks=c("","1","2","3","4"))+
   geom_text(aes(label =  as.factor(layer)), size = 3, color = "black") +
   ggtitle("Z - Patches")
 patchX_<-getRasterPlot(patchX_,1)
 patchX_
-f5<- file.path(nPath,paste("config_patches",n,"_",iter,".png",sep = ""))
+f5<- file.path(nPath,paste("X_patches",n,"_",iter,".png",sep = ""))
 ggsave(f5,width = 3,height = 2, unit = "in",dpi = 300)
 
 
@@ -173,18 +190,20 @@ risk.df <- clean.df(risk)
 names(risk.df) <- c("Threshold","Probability","LowerCI","UpperCI")
 risk.df
 Term<-ggplot() +
-  geom_line(data=risk.df, aes(x=Threshold, y=Probability,colour = "Probability"))+
-  geom_line(data=risk.df, aes(x=Threshold, y=LowerCI,colour = "95% CI"), linetype = "dashed")+
+  geom_line(data=risk.df, aes(x=Threshold, y=Probability,colour = "Prob"))+
+  geom_line(data=risk.df, aes(x=Threshold, y=LowerCI,colour = "CI"), linetype = "dashed")+
   geom_line(data=risk.df, aes(x=Threshold, y=UpperCI),color = "red",linetype = "dashed")+
   scale_x_continuous(limits = c(0, 4),expand = c(0,0))+
   scale_y_continuous(limits = c(0, 1),expand = c(0,0))+
-  scale_color_manual(name = "Legend", values = c("Probability" = "darkblue", "95% CI" = "red"))+
-  annotate(geom = "text",x=2.5, y=.70, label=paste("Extinction Risk:",risk.df$Probability[1],sep = " "),color = "black",size = 3)+
+  scale_color_manual(name = "Legend", values = c("Prob" = "darkblue", "CI" = "red"))+
+  annotate(geom = "text",x=2.5, y=.70, label=paste("Extinction Risk:",risk.df$Probability[1],sep = " "),color = "black",size = 2)+
   ggtitle("Terminal Extinction Risk")
 Term<-tightLayout(Term)
 Term
 f6<- file.path(nPath,paste("TerExtRisk",n,"_",iter,".png",sep = ""))
-ggsave(f6,width = 2.8,height = 3, unit = "in",dpi = 300)
+#ggsave(f6,width = 2.8,height = 3, unit = "in",dpi = 300)
+ggsave(f6,width = 2.25,height = 2.5, unit = "in",dpi = 300)
+
 
 
 outPath <- file.path(configPath,"output","metapop","QuasiExt.txt")
@@ -196,11 +215,11 @@ risk.df
 Quasi<-ggplot(risk.df,aes(Time)) +
   geom_bar(aes(y=Probability,fill = "PDF"),stat="identity")+
   geom_line(aes(y=CDF,color = "CDF"))+
-  geom_line(aes(y=LowerCI,color = "95% CI"),linetype = "dashed")+
+  geom_line(aes(y=LowerCI,color = "CI"),linetype = "dashed")+
   geom_line(aes(y=UpperCI),color = "red",linetype = "dashed")+
   scale_x_continuous(limits = c(0, 200),expand = c(0,0))+
   scale_y_continuous(limits = c(0, 1),expand = c(0,0))+
-  scale_color_manual(" ", values = c("CDF" = "darkblue", "95% CI" = "red","PDF" = "darkgreen"))+
+  scale_color_manual(" ", values = c("CDF" = "darkblue", "CI" = "red","PDF" = "darkgreen"))+
   scale_fill_manual("",values ="darkgreen")+
   annotate(geom = "text",x=120, y=0.25, label=paste(output[7,1],sep = " "),color = "black",size = 3)+
   ggtitle("Time to Quasi Extinction")

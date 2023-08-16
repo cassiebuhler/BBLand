@@ -14,6 +14,7 @@ from os import path
 import re
 # import sys
 
+
 def getObj(n,config,i,tmax):
     """ runs RAMAS to get the PVA metrics 
     Parameters
@@ -33,7 +34,7 @@ def getObj(n,config,i,tmax):
         PVA metrics. If none are found, we return a "bad" output to not break code
 
     """
-    duration = 50
+    #duration = 500
     basePath = os.getcwd()
 
     #creating directory for solutions from this iteration 
@@ -46,6 +47,7 @@ def getObj(n,config,i,tmax):
     np.savetxt(iterPath+"./"+fileName, config, delimiter=',',fmt = "%d")
 
     ## call r code to get .asc,.ptc, and .pdy files for X. 
+
     cmd_rcode = "runR.bat "+str(n) + " "+str(i)+" "+fileName
     subprocess.run(cmd_rcode, cwd = basePath, shell=True)
     
@@ -58,17 +60,8 @@ def getObj(n,config,i,tmax):
         print("No MP file was found.")
         return badProblem()
     
-    #modifying metapop file to edit duration/tmax 
-    with open(mpFile) as f: 
-        metapopFile = f.read()
-    metapopFile_new = re.sub("(1000\n100)", str(duration)+"\n"+str(tmax),metapopFile)
-    
-    with open(iterPath+"\\"+"Z"+str(n)+"_"+str(i)+".mp","w") as f:
-        f.write(metapopFile_new)
-    
-    #Running metapop
-    subprocess.run("batch"+str(n)+"_"+str(i)+"b.BAT", cwd = iterPath, shell=True)
-    outputMetaPath = path.join(iterPath,"output","metapop")
+
+    outputMetaPath = path.join(iterPath,"output")
     
     #gettingr results 
     risk = getResults(outputMetaPath,tmax)
@@ -98,6 +91,9 @@ def getResults(outputMetaPath,tmax):
         # if there's no output, there are likely no patches found. 
         print("No metapop output files found.")
         return badProblem()
+    
+    # with open(outputMetaPath+"\\"+"Abund.txt",'r') as f:
+    #     Abund = f.readlines()
 
     with open(outputMetaPath+"\\"+"IntExtRisk.txt",'r') as f:
         IntExtRisk = f.readlines()
@@ -107,9 +103,10 @@ def getResults(outputMetaPath,tmax):
         
     with open(outputMetaPath+"\\"+"QuasiExt.txt",'r') as f:
         QuasiExt = f.readlines()
-    
-    numPopulations = TerExtRisk[7].split()[0]
-    riskTotExt  = TerExtRisk[14].split()[1]
+        
+    #medianFinalAbund = Abund[119].split()[3]
+    #numPopulations = TerExtRisk[7].split()[0]
+    riskTotExt  = TerExtRisk[14].split()[1] if TerExtRisk[14].split()[0] == "0" else 0
     # avgLocExtDur = [pop.split()[5] for pop in LocExtDur[15:]]
     medianQuasiExt = QuasiExt[13]
     expectedMinAbund = IntExtRisk[13].split()[-1]
@@ -119,11 +116,12 @@ def getResults(outputMetaPath,tmax):
         medianQuasiExt = findNum.search(QuasiExt[13]).group()
     else:
         medianQuasiExt =  tmax+1 # max number of timesteps 
-    print('Num Populations: '+str(numPopulations))
     print('Risk to Total Extinction: '+str(riskTotExt))
     # print('Average Local Extinction Duration: '+str(avgLocExtDur))
     print('Median quasi extinction: '+str(medianQuasiExt))
     print('Expected min abundance: '+str(expectedMinAbund))
+    #print('Num Populations: '+str(numPopulations))
+    #print('Median final abundance: '+str(medianFinalAbund))
     # risk = np.array([float(riskTotExt), -float(medianQuasiExt),-float(expectedMinAbund)])
     return float(riskTotExt), float(medianQuasiExt),float(expectedMinAbund)
 
@@ -135,4 +133,6 @@ def badProblem():
     riskTotExt = 1 #make this bad 
     medianQuasiExt = 0 # make this bad
     expectedMinAbund = 0 # make bad 
+    #numPop = 10000 #make bad
+    #medianFinalAbund = 0
     return float(riskTotExt), float(medianQuasiExt),float(expectedMinAbund)

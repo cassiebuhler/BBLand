@@ -1,0 +1,37 @@
+C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\B10.mp
+2
+1 C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\B10.ptc
+2 C:\Users\cb3452\OneDrive - Drexel University\bbland\bbland-github\data\n10\B10.ptc
+iter Fyear Lyear patch new2old old2new
+ 1   0  98  1  0  0
+ 1   0  98  2  0  0
+ 1   0  98  3  0  0
+ 1   0  98  4  0  0
+ 1   0  98  5  0  0
+ 1   0  98  6  0  0
+ 1   0  98  7  0  0
+ 1   0  98  8  0  0
+ 1   0  98  9  0  0
+ 1   0  98 10  0  0
+ 1   0  98 11  0  0
+ 1   0  98 12  0  0
+ 1   0  98 13  0  0
+ 1   0  98 14  0  0
+ 1   0  98 15  0  0
+ 1   0  98 16  0  0
+ 2  99 500  1  1  1
+ 2  99 500  2  2  2
+ 2  99 500  3  3  3
+ 2  99 500  4  4  4
+ 2  99 500  5  5  5
+ 2  99 500  6  6  6
+ 2  99 500  7  7  7
+ 2  99 500  8  8  8
+ 2  99 500  9  9  9
+ 2  99 500 10 10 10
+ 2  99 500 11 11 11
+ 2  99 500 12 12 12
+ 2  99 500 13 13 13
+ 2  99 500 14 14 14
+ 2  99 500 15 15 15
+ 2  99 500 16 16 16

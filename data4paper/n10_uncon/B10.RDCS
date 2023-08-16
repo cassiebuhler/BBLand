@@ -1,0 +1,44 @@
+file format : IDRISI Raster A.1
+file title  : B10
+data type   : integer
+file type   : binary
+columns     : 10
+rows        : 10
+ref. system : plane
+ref. units  : m
+unit dist.  : 1.0
+min. X      : 0
+max. X      : 10000.00
+min. Y      : 0
+max. Y      : 10000.00
+pos'n error : unknown
+resolution  : 1000.00
+min. value  : 0
+max. value  : 16
+display min : 0
+display max : 16
+value units : unspecified
+value error : unknown
+flag value  : 0
+flag def'n  : background
+legend cats : 17
+code      0 : No Habitat
+code      1 : Pop. 1
+code      2 : Pop. 2
+code      3 : Pop. 3
+code      4 : Pop. 4
+code      5 : Pop. 5
+code      6 : Pop. 6
+code      7 : Pop. 7
+code      8 : Pop. 8
+code      9 : Pop. 9
+code     10 : Pop. 10
+code     11 : Pop. 11
+code     12 : Pop. 12
+code     13 : Pop. 13
+code     14 : Pop. 14
+code     15 : Pop. 15
+code     16 : Pop. 16
+comment     : Habitat patches
+lineage     : Created by RAMAS GIS 4.1 (Spatial data)
+lineage     : RAMAS GIS results: 8/15/2023 9:06:42 PM

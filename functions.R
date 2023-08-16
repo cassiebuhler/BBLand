@@ -1,68 +1,72 @@
+### This file consists of all the functions used in getMap.R
 
-
-getLandscape <- function(n,configuration) {
-  set.seed(0)
-  r <- raster(xmn=0, xmx=n, ymn=0, ymx=n, ncol=n, nrow=n)
-  p <- rasterToPolygons(r)
-  if (is.null(configuration)){
-    #random uniform values - continuous 
-    # get base map B
-    map <- runif(n*n,min=0,max=1)
+# getLandscape: Converting the values into rasters to save as ASC
+# Inputs: X (configuration), and nxn landscape size
+# Output: B (base habitat) or Z (new habitat)
+getLandscape <- function(n,X) {
+  set.seed(0) 
+  r <- raster(xmn=0, xmx=n, ymn=0, ymx=n, ncol=n, nrow=n) #generate blank raster
+  B <- runif(n*n,min=0,max=1)  #get habitat values for B 
+  if (is.null(X)){
+    values(r) <- B #assign base habitat to raster 
   }
-  else{
-    #get Z from X configuration 
-    set.seed(0)
-    B <- runif(n*n,min=0,max=1)
-    X<- configuration
-    map<- X
-    map[which(X==1)] <- B[which(X==1)]
+  else{#get Z from X configuration 
+    Z<- X
+    Z[which(X==1)] <- B[which(X==1)] #only preserving parcels denoted by X
+    values(r) <- Z #assign new habitat to raster 
   }
-  values(r) <- map
-  return(r)
+  return(r) 
 } 
-catn2 <- function(input) {
-  line <- paste(input,"\n",sep = "")
-  cat(line)
-}
 
+#catn: Adding newline to a string 
+# Input: A string or value. Doesn't matter, it's converted to a string
+# Output: String with \n appended at end 
 catn <- function(input) {
-  if (is.character(input) == 0){
+  if (is.character(input) == 0){ #convert inputs to characters 
     input <- as.character(input)
   }
-  line <- paste(input,"\n",sep = "")
+  line <- paste(input,"\n",sep = "") #add a newline 
   cat(line)
 }
 
+# convertASCtoPTC - Converting text format ASC to RAMAS Spatial Data format PTC 
+# RAMAS Spatial Data only allows very specific file formats. We opted with 
+# ASC since it's a text file and is easy to generate
+# Inputs: path: file path to save to, landscapeType: B or Z, n: landscape size, iter: iteration of configuration X
+# Output: PTC files for B or Z
 convertASCtoPTC <- function(path,landscapeType,n,iter)
 {
-  if (is.null(iter)){
+  if (is.null(iter)){ # using B 
     ascFile <- paste(landscapeType,n,".asc",sep = "")
     ptcFile <- file.path(path,paste(landscapeType,n,".ptc",sep = ""))
     inputMapName <- paste(landscapeType,n,sep = "")
     
-  }else{
+  }else{ # using Z
   ascFile <- paste(landscapeType,n,"_",iter,".asc",sep = "")
   ptcFile <- file.path(path,paste(landscapeType,n,"_",iter,".ptc",sep = ""))
   inputMapName <- paste(landscapeType,n,"_",iter,sep = "")
 }
   
+  
+  # THIS IS WHERE YOU CAN SPECIFY POPULATION PARAMETERS. 
   genInfoTitle <- inputMapName
   cellLength <- "1.00000"
   
   HSF <- paste("[",inputMapName,"]",sep = "")
   HS_threshold <- "0.50000"
-  #HS_threshold <- "0.95000" # higher threshold for larger n 
+  
   neighborhoodDistance <- "1.00000"
   HSF_color <- "Blue"
   HSM_decimals <- 2
-  # carryingCapacity <- "ahs*4"
-  carryingCapacity <- "ahs*40"
-  maxGrowthR <- 1.05
-  initAbund <- "ahs*20"
-  relFec <- "ahs*1.2"
-  relSur <- "ahs*1.2"
-  # relFec <- "ahs*2"
-  # relSur <- "ahs*2"
+  maxGrowthR <- 1.5
+  
+  # ths = total habitat suitability 
+  carryingCapacity <- "ths*4"
+  initAbund <- "ths*2"
+  relFec <- "max(1,ths*1.2)"
+  relSur <- "max(1,ths*1.2)"
+
+  #catastrophe probability
   cat1prob <- 0
   cat1mult <- 1
   cat2prob <- 0
@@ -73,16 +77,19 @@ convertASCtoPTC <- function(path,landscapeType,n,iter)
   pathToASCfile <- file.path(path,ascFile)
   pathToASCfile<- gsub("/", "\\\\", pathToASCfile)
   
-  inputMap_color <- "Red"
+  inputMap_color <- "Red" 
+  #Dispersal 
   disp_a <- "0.50"
   disp_b <- "0.80"
   disp_c <- "1.00"
   disp_d <- "1.00"
+  #Correlation  
   cor_a <- "0.80"
   cor_b <- "2.00"
   cor_c <- "1.00"
   
   ####### printing to file 
+  # the following lines are written to match the exact format of PTC
   sink(ptcFile)
   catn("Landscape input file (4.1) map=ˇ")
   catn(genInfoTitle)
@@ -113,8 +120,10 @@ convertASCtoPTC <- function(path,landscapeType,n,iter)
   catn("ARC/INFO,ConstantMap")
   catn(inputMap_color)
   catn(n)
-  # CE (CEILING) BH (CONTEST) LO (SCRAMBLE)
-  catn(",0.000,0.000,,CE,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
+  # CE (CEILING) BH (CONTEST) LO (SCRAMBLE) # these are the different density types 
+  #catn(",0.000,0.000,,CE,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
+  catn(",0.000,0.000,,LO,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
+  
   catn("Migration")
   catn("TRUE")
   catn(paste(disp_a, disp_b, disp_c, disp_d,sep = ","))
@@ -123,17 +132,17 @@ convertASCtoPTC <- function(path,landscapeType,n,iter)
   catn(paste(cor_a, cor_b, cor_c,sep = ","))
   cat("-End of file-")
   sink()
-  # file.show(ptcFile)
-  
   closeAllConnections()
 }
 
-
-
+# convertPTCtoPDY - Converting RAMAS Spatial Data to Habitat Dynamics 
+# To call RAMAS from our code, we need to use batch mode instead of the GUI
+# Thus converting RAMAS files (PTC -> PDY) needs to be done manually
+# Inputs: BPath: path to B file, path: path to Z file, n: landscape size, iter: configuration iteration 
+# Output: PDY file for Z
 convertPTCtoPDY <- function(BPath, path,n,iter)
 {
 
-  
   title <- paste("Z",n,"_",iter,sep = "")
   pdyFile <- file.path(path,paste(title,".pdy",sep = ""))
 
@@ -141,167 +150,99 @@ convertPTCtoPDY <- function(BPath, path,n,iter)
   mpFile<- gsub("/", "\\\\", mpFile)
   t1 <- 1
   t2 <- 10
-  kFile<- "pop"
-  fFile<- "pop"
-  sFile<- "pop"
+  kFile<- "pop" #name for file prefix for carrying capacities for each population 
+  fFile<- "pop" #fecundity rates 
+  sFile<- "pop" # survival rates 
   XFile <- file.path(path,paste("X",n,"_",iter,".ptc",sep = ""))
   BFile <- file.path(BPath,paste("B",n,".ptc",sep = ""))
   
   XFile<- gsub("/", "\\\\", XFile)
   BFile<- gsub("/", "\\\\", BFile)
   #change1 <- "at mid-point"
-  change1 <- "linear"
-  change2<- "linear"
-  
-  sink(pdyFile)
-  catn("Habitat Dynamics (version 4.1)")
-  catn(title)
-  cat("\n\n\n\n")
-  catn(mpFile)
-  catn(kFile)
-  catn(fFile)
-  catn(sFile)
-  catn("2")
-  catn(BFile)
-  catn(t1)
-  catn(change1)
-  catn(change1)
-  catn(change1)
-  catn(XFile)
-  catn(t2)
-  catn(change2)
-  catn(change2)
-  catn(change2)
-  sink()
-  # file.show(pdyFile)
-  closeAllConnections()
+  change1 <- "same until next"
+  change2 <- "linear"
+
+
+  line= character()
+  line[1] <- "Habitat Dynamics (version 4.1)"
+  line[2] <- paste(title,"\n\n\n\n",sep = "")
+  line[3] <- mpFile
+  line[4] <- kFile
+  line[5] <- fFile
+  line[6] <- sFile
+  line[7] <- "2"
+  line[8] <-BFile
+  line[9] <-t1
+  line[10] <-change1
+  line[11] <-change1
+  line[12] <-change1
+  line[13] <-XFile
+  line[14] <-t2
+  line[15] <-change2
+  line[16] <-change2
+  line[17] <-change2
+ 
+  writeLines(line,pdyFile)
   
 }
 
 
-convertPTCtoMP <- function(nPath,n)
+# convertPTCtoPDY_base - Converting RAMAS Spatial Data to Habitat Dynamics 
+# To call RAMAS from our code, we need to use batch mode instead of the GUI
+# Thus converting RAMAS files (PTC -> PDY) needs to be done manually
+# Inputs: path:path to B file, n: landscape size
+# Output: PDY file for B
+convertPTCtoPDY_base <- function(path,n)
 {
-  library(stringr)
+  # It's really hard to convert PTC to MP, so even though the base case has no 
+  # habitat to combine with, we combine it with itself to get around this.
   title <- paste("B",n,sep = "")
-  mpFile <- file.path(nPath,paste(title,".mp",sep = ""))
+  pdyFile <- file.path(path,paste(title,".pdy",sep = ""))
+  mpFile <- file.path(path,paste(title,".mp",sep = ""))
   mpFile<- gsub("/", "\\\\", mpFile)
-  ptcFile <- file.path(nPath,paste("B",n,".ptc",sep = ""))
-  ptcFile<- gsub("/", "\\\\", ptcFile)
-  pt <- read.csv(ptcFile,sep = "\n",header = FALSE)
-  pops <- lapply(pt, function (x) {str_extract(x, "Pop")})
-  ind <- which(!is.na(pops$V1))
-  
-  migration_ind  <- lapply(pt, function (x) {str_extract(x, "Migration")})
-  migration_ind<- which(!is.na(migration_ind$V1))
-  
-  reps <- 50
-  duration <-100
-  init = list()
-  sink(mpFile)
-  catn("Metapopulation input file (6.0) map=ˇ")
-  catn(title)
-  cat("\n\n\n\n")
-  catn(reps)
-  catn(duration)
-  catn("TRUE")
-  catn("1 FALSE")
-  cat("\n\n")
-  catn("Local")
-  cat("\n")
-  catn("not spread")
-  catn("0.0000")
-  catn("0.0000,0.0000,0.0000,0.0000")
-  cat("\n\n")
-  catn("Local")
-  cat("\n")
-  catn("not spread")
-  catn("0.0000")
-  catn("0.0000,0.0000,0.0000,0.0000")
-  catn("False,Zero")
-  catn("all vital rates")
-  catn("Lognormal,0")
-  catn("0.000000")
-  catn("count in total")
-  catn("1 (F, S, K correlated)")
-  catn("No")
-  catn("AllStages")
-  catn("Yes")
-  catn("EX")
-  cat("\n\n")
-  catn("years")
-  catn("OnlyFemale")
-  catn("1")
-  catn("Monogamous")
-  catn("2.0")
-  catn("2.0")
-  catn("0.0000")
-  catn("0")
-  for (i in 1:length(ind)){
-    catn2(pt$V1[ind[i]])
-    p = strsplit(pt$V1[ind[1]],",")
-    init[i] = unlist(p)[4]
-  }
-  catn("Migration")
-  catn("FALSE")
-  catn(pt$V1[migration_ind+2])
-  for (i in 1:length(ind)){
-    catn2(strrep(" 0,",length(ind)))
-  }
-  catn("Correlation")
-  catn("TRUE")
-  catn2(pt$V1[migration_ind+5])
-  catn("1 type(s) of stage matrix")
-  catn("default")
-  catn("1.000000")
-  catn("1.000000")
-  catn("0")
-  catn("1.000000000")
-  catn("1 type(s) of st.dev. matrix")
-  catn("default")
-  catn("0.000000000")
-  catn("Constraints Matrix")
-  catn("0.000000")
-  catn("1.000000")
-  catn("1.000000") 
-  catn("1.000000")
-  catn("1.000000")
-  catn("1.000000")
-  for(i in 1:length(ind)){
-   catn2(init[i])
-  }
-  catn("Stage 1")
-  catn("1.0")
-  catn("FALSE")
-  catn("TRUE")
-  catn("1.0")
-  catn("0 (pop mgmnt)")
-  catn("0.0")
-  catn("0.0")
-  catn("1")
-  catn("-End of file-")
-  sink()
-  # file.show(pdyFile)
-  closeAllConnections()
+  t1 <- 1
+  t2 <- 100
+  kFile<- "pop"
+  fFile<- "pop"
+  sFile<- "pop"
+  BFile <- file.path(path,paste("B",n,".ptc",sep = ""))
+  BFile<- gsub("/", "\\\\", BFile)
+  change1 <- "same until next"
+  change2 <- "linear"
+  line= character()
+  line[1] <- "Habitat Dynamics (version 4.1)"
+  line[2] <- paste(title,"\n\n\n\n",sep = "")
+  line[3] <- mpFile
+  line[4] <- kFile
+  line[5] <- fFile
+  line[6] <- sFile
+  line[7] <- "2"
+  line[8] <-BFile
+  line[9] <-t1
+  line[10] <-change1
+  line[11] <-change1
+  line[12] <-change1
+  line[13] <-BFile
+  line[14] <-t2
+  line[15] <-change2
+  line[16] <-change2
+  line[17] <-change2
+
+  writeLines(line,pdyFile)
   
 }
+  
 
-
+# getBatchFile - The executable that runs RAMAS for Z
+# Inputs: n: size, iter: configuartion iteration, path: location of X and Z files 
+# Output: BAT file that runs RAMAS Spatial Data, Habitat Dynamics, and Metapop 
 getBatchFile <- function(n,iter,path)
 {
   outPath <- file.path(path,"output")
   ifelse(!dir.exists(outPath), dir.create(outPath), FALSE)
-  
-  outMetaPath<- file.path(outPath,"metapop")
-  ifelse(!dir.exists(outMetaPath), dir.create(outMetaPath), FALSE)
-
-  path_meta <- file.path(path,"output","metapop")
-
+ 
   batFile <- paste("batch",n,"_",iter,".BAT",sep = "")
   batPath <- file.path(path,batFile)
-  
-  batFile2 <- paste("batch",n,"_",iter,"b.BAT",sep = "")
-  batPath2 <- file.path(path,batFile2)
-  
   XPTCFile <- paste("X",n,"_",iter,".ptc",sep = "")
   ZPDYfile <- paste("Z",n,"_",iter,".pdy",sep = "")
   
@@ -310,58 +251,44 @@ getBatchFile <- function(n,iter,path)
   RAMAS_files <- r"("C:\Users\cb3452\Documents\RAMAS Model Files\*.*")"
   line1<- paste('START /WAIT "title"',RAMAS_spatial,XPTCFile,'/RUN=YES /TEX')
   line2<- paste('START /WAIT "title"',RAMAS_hab,ZPDYfile,'/RUN=YES /TEX')
-
-  sink(batPath)
-  catn(line1)
-  catn(line2)
-  sink()
-  closeAllConnections()
   
+  RAMAS_metapop <- r"("C:\Program Files\RAMAS Multispecies 6\Metapop.exe")"
   ZMPfile <- paste("Z",n,"_",iter,".mp",sep = "")
-  RAMAS_metapop <- r"("C:\Program Files\RAMAS Multispecies 6\Metapop.exe")"
   line3<- paste('START /WAIT "title"',RAMAS_metapop,ZMPfile,'/RUN=YES /TEX')
-  path_meta<- gsub("/", "\\\\", path_meta)
-  path_meta<- paste0("\"", path_meta, "\"")
-  line4 <- paste("move",RAMAS_files,path_meta)
   
-  #CREAT METAPOP 
-  sink(batPath2)
-  catn(line3)
-  catn(line4)
-  sink()
-  closeAllConnections()
-  
-  
+  outPath<- gsub("/", "\\\\", outPath)
+  outPath<- paste0("\"", outPath, "\"")
+  line4 <- paste("move",RAMAS_files,outPath)
+
+  writeLines(c(line1,line2,line3,line4),batPath)
 }
 
-getBBatchFile <- function(n,nPath)
+
+
+# getBatchFile - The executable that runs RAMAS for B
+# Inputs: n: size,  path: location of B
+# Output: BAT file that runs RAMAS Spatial Data, Habitat Dynamics, and Metapop 
+getBatchBaseFile <- function(n,path)
 {
+
   batFile <- paste("batch",n,".BAT",sep = "")
-  batPath <- file.path(nPath,batFile)
-  mpFile <- paste("B",n,".mp",sep = "")
-  RAMAS_metapop <- r"("C:\Program Files\RAMAS Multispecies 6\Metapop.exe")"
-  line1<- paste('START /WAIT "title"',RAMAS_metapop,mpFile,'/RUN=YES','/TEX')
-  RAMAS_files <- r"("C:\Users\cb3452\Documents\RAMAS Model Files\*.*")"
-  nPath<- gsub("/", "\\\\", nPath)
-  nPath<- paste0("\"", nPath, "\"")
-  line2 <- paste("move",RAMAS_files,nPath)
-  
-  sink(batPath)
-  catn(line1)
-  catn(line2)
-  sink()
-  closeAllConnections()
-}
-
-getSpatBatFile <- function(n,path)
-{
-  batFile <- paste("batch",n,"_getSpatial.BAT",sep = "")
   batPath <- file.path(path,batFile)
   BPTCFile <- paste("B",n,".ptc",sep = "")
+  BPDYfile <- paste("B",n,".pdy",sep = "")
+  BMPfile <- paste("B",n,".mp",sep = "")
+  
   RAMAS_spatial <- r"("C:\Program Files\RAMAS Multispecies 6\SpatialData.exe")"
-  line<- paste('START /WAIT "title"',RAMAS_spatial,BPTCFile,'/RUN=YES','/TEX')
-  sink(batPath)
-  catn(line)
-  sink()
-  closeAllConnections()
+  RAMAS_hab <- r"("C:\Program Files\RAMAS Multispecies 6\Habdyn.exe")"
+  RAMAS_files <- r"("C:\Users\cb3452\Documents\RAMAS Model Files\*.*")"
+  line1<- paste('START /WAIT "title"',RAMAS_spatial,BPTCFile,'/RUN=YES /TEX')
+  line2<- paste('START /WAIT "title"',RAMAS_hab,BPDYfile,'/RUN=YES /TEX')
+  
+  RAMAS_metapop <- r"("C:\Program Files\RAMAS Multispecies 6\Metapop.exe")"
+  line3<- paste('START /WAIT "title"',RAMAS_metapop,BMPfile,'/RUN=YES /TEX')
+  
+  path<- gsub("/", "\\\\", path)
+  path<- paste0("\"", path, "\"")
+  line4 <- paste("move",RAMAS_files,path)
+  
+  writeLines(c(line1,line2,line3,line4),batPath)
 }
