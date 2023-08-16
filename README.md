@@ -1,7 +1,5 @@
-<<<<<<< HEAD
+
 # Decision-Making for Land Conservation: A Derivative-Free Optimization Framework with Nonlinear Inputs
-=======
-# Black-box optimization for reserve design in biodiversity conservation 
 
 BBLand is software for spatial conservation planning with an unknown (i.e. black box) input. In its current form, we have [RAMAS Metapopulation](https://www.ramas.com/metapop-6-0) PVA software as the black box input. RAMAS is commercial software that requires a license to use. Thus, unless RAMAS is installed on your machine, this code won't work. 
 
