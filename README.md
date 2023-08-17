@@ -99,14 +99,17 @@ The results from the paper used 4 scenarios:
 * `data/n10_con`: 10x10 landscape solved with constrained model.
 * `data/n10_uncon`: 10x10 landscape solved with multi-objective model. $Z_m^*$ from the paper. 
 * `data/n20_con`: 20x20 landscape solved with constrained model. $Z_c^*$ from the paper. 
-* `data/n20_uncon`: 20x20 landscape solved with multi-objective model. $Z_m^*$ from the paper. 
+* `data/n20_uncon`: 20x20 landscape solved with multi-objective model. $Z_m^*$ from the paper.
+  
+Note: Each iteration uses ~450 KB and with 2005 iterations for $n=20$ and 505 iterations for $n=10$, this would greatly exceed the allowed submission size of 100 MB. Thus, we have only included the base case $B$ and the best solution. 
 
-Note: Each iteration uses ~450 KB and with 2005 iterations for $n=20$ and 505 iterations for $n=10$, this would greatly exceed the allowed submission size of 100 MB. Thus, we have only included the base case $B$ and the best solution
 
 * `data/n<n>_<model>`: All the data and PVA output for B
 * `data/n<n>_<model>/iter<i>`: The data files for best $X^*$
 * `data/n<n>_<model>/iter<i>/output`: PVA output for the best $X^*$
-  
+
+In addition, our technical appendix includes graphs of the PVA metrics for a specific problem. This problem can be found in ``data/n20_uncon/iter62``. 
+
 ## Results
 * `output_n<n>_<model>.txt`: Output log of every X and its solution 
 * `parameters.txt`: A text file of parameters for that problem. This is also detailed in the technical appendix. 
