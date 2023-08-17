@@ -106,9 +106,12 @@ Note: Each iteration uses ~450 KB and with 2005 iterations for $n=20$ and 505 it
 * `data/n<n>_<model>`: All the data and PVA output for B
 * `data/n<n>_<model>/iter<i>`: The data files for best $X^*$
 * `data/n<n>_<model>/iter<i>/output`: PVA output for the best $X^*$
+  
+## Results
+* `output_n<n>_<model>.txt`: Output log of every X and its solution 
+* `parameters.txt`: A text file of parameters for that problem. This is also detailed in the technical appendix. 
 
-
-### RAMAS File Types
+### RAMAS Files
 One of the difficulties with using RAMAS is that file formats are specific to their software, and converting the files is done in their GUI. 
 To call RAMAS from our code, we needed to use batch mode instead. This meant that we needed to manually write these text files in their specific format. 
 
@@ -160,5 +163,6 @@ The metrics we used are found in the files:
 *  Expected minimum abundance (IntExtRisk)
 *  Risk to extinction (TerExtRisk)
 *  Time to extinction (QuasiExt)
+
 
 
