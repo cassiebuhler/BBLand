@@ -195,7 +195,7 @@ convertPTCtoPDY <- function(BPath, path,n,iter)
 # Output: PDY file for B
 convertPTCtoPDY_base <- function(path,n)
 {
-  # It's really hard to convert PTC to MP, so even though the base case has no 
+  # It's hard to convert PTC to MP, so even though the base case has no 
   # habitat to combine with, we combine it with itself to get around this.
   title <- paste("B",n,sep = "")
   pdyFile <- file.path(path,paste(title,".pdy",sep = ""))
