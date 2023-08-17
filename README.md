@@ -66,13 +66,21 @@ getLandscape <- function(n,X) {
 ## Dependencies
 Code uses a combination of R, Python, and RAMAS. 
 
+RAMAS
 * [RAMAS GIS](https://www.ramas.com/gis-6-0) (Version 6.0)
 * [RAMAS Metapopulation](https://www.ramas.com/metapop-6-0) (Version 6.0)
+
+R package 
 * [raster](https://cran.r-project.org/web/packages/raster/index.html) (Version 3.6-20)
+
+Python packages 
 * [pygmo](https://esa.github.io/pygmo2/) (Version 2.18.0)
-* numpy
-* random
-* default_timer
+* numpy 
+* random 
+* timeit
+* os
+* re
+* subprocess
 
 
 ## Scripts
