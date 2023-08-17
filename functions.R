@@ -1,3 +1,4 @@
+### functions.R 
 ### This file consists of all the functions used in getMap.R
 
 # getLandscape: Converting the values into rasters to save as ASC
@@ -88,6 +89,8 @@ convertASCtoPTC <- function(path,landscapeType,n,iter)
   cor_b <- "2.00"
   cor_c <- "1.00"
   
+  # CE (CEILING) BH (CONTEST) LO (SCRAMBLE) # these are the different density types 
+  densityType = "LO"
   ####### printing to file 
   # the following lines are written to match the exact format of PTC
   sink(ptcFile)
@@ -120,10 +123,8 @@ convertASCtoPTC <- function(path,landscapeType,n,iter)
   catn("ARC/INFO,ConstantMap")
   catn(inputMap_color)
   catn(n)
-  # CE (CEILING) BH (CONTEST) LO (SCRAMBLE) # these are the different density types 
-  #catn(",0.000,0.000,,CE,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
-  catn(",0.000,0.000,,LO,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
-  
+  #catn(",0.000,0.000,,LO,,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,")
+  catn(paste(",0.000,0.000,,",densityType,",,,0.0,0.0,,0.0,1,0,TRUE,1,1,1,0.0,1,0,1,0,0,0,1.0,",sep = ""))
   catn("Migration")
   catn("TRUE")
   catn(paste(disp_a, disp_b, disp_c, disp_d,sep = ","))

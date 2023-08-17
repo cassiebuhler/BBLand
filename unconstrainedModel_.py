@@ -1,8 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul 26 18:34:46 2023
+unconstrainedModel_.py 
 
-@author: cb3452
+This code consists of all the functions necessary for solving a multi-objective
+optimization problem with pygmo.  
+
+getRAMAS is called in each iteration to obtain the PVA values and solves the problem:
+
+Minimize Weighted Objective lambda*f(X)
+s.t. 
+Z = B * X
+X is binary
+
+where f(X) = [c^T*X (cost), risk(Z), time(Z), abundance(Z)]
+
+In the paper, this is equivalent to equations (8).
 """
 
 import numpy as np
@@ -181,7 +193,6 @@ def getBMetrics(n,tmax):
     """
     #replace with your path 
     basePath = os.getcwd()
-    #basePath = "C:/Users/cb3452/OneDrive - Drexel University/bbland/bbland-github"
     nPath = path.join(basePath,"data","n"+str(n))
     fileName = "."
     cmd_rcode = "runR.bat "+str(n) + " "+str(0)+" "+fileName

@@ -1,18 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul  6 15:11:52 2023
+getRAMAS.py
 
-@author: cassiebuhler
+Using the current reserve configuration, this code gets the necessary RAMAS files
+from getMaps.R (by calling batch file getR.BAT) then invokes RAMAS and outputs 
+the selected PVA metrics. 
+
+There are a couple cases we've encountered when RAMAS wouldn't output PVA metrics:
+    - no patches found (habitat threshold too high; no habitable parcels)
+    - too many patches (this occurs typically with large problem sizes and 
+                        we mitigate it by increasing the habitat threshold)
+In these cases, we return a "bad" output so it has a low ranking in solutions. 
+
+We only select a couple metrics for our model, but RAMAS will output 14 text files
+Detailed descriptions are found in the README
+
+    Parameters
+    ----------
+    n : int
+        Problem size.
+    config : Array of float64 (n*n,1)
+        Current configuration X.
+    i : int
+        Current iteration.
+    tmax : int
+        Total duration of simulated timesteps in RAMAS.
+        
+    Returns
+    -------
+    risk : 
+        PVA metrics. 
+
+
 """
 
 import numpy as np
 import subprocess
 import os
 from os import path
-# import pygmo as pg
 import re
-# import sys
 
 
 def getObj(n,config,i,tmax):
@@ -63,7 +90,7 @@ def getObj(n,config,i,tmax):
 
     outputMetaPath = path.join(iterPath,"output")
     
-    #gettingr results 
+    #getting r results 
     risk = getResults(outputMetaPath,tmax)
     
     return risk

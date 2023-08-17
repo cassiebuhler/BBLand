@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jul 26 15:28:16 2023
+constrainedModel_.py 
 
 This code consists of all the functions necessary for solving a constrained
 optimization problem with pygmo.  
 
-@author: cb3452
+getRAMAS is called in each iteration to obtain the PVA values and solves the problem:
+
+
+Minimize Cost c^T * X
+s.t.
+risk(Z) <= rho_r + risk(B)
+time(Z) >= rho_t * time(B)
+abundance(Z) >= rho_a * abundance(B)
+X is binary
+
+In the paper, this is equivalent to equations (6).
+
 """
 # import math
 import numpy as np
