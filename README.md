@@ -110,6 +110,9 @@ Note: Each iteration uses ~450 KB and with 2005 iterations for $n=20$ and 505 it
 
 In addition, our technical appendix includes graphs of the PVA metrics for a specific problem. This problem can be found in ``data/n20_uncon/iter62``. 
 
+## Figures 
+All figures generated from `getFigures.R` are in this folder. 
+
 ## Results
 * `output_n<n>_<model>.txt`: Output log of every X and its solution 
 * `parameters.txt`: A text file of parameters for that problem. This is also detailed in the technical appendix. 
