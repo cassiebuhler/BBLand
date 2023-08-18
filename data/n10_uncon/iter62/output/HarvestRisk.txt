@@ -1,0 +1,15 @@
+METAPOPULATION MODEL results; Date=8/2/2023 Time=23:01:31
+===========================================================
+B10
+
+
+
+
+   22 populations (22 included in summation)
+ 1000 replications;  Duration = 100
+===========================================================
+
+Risk of low harvest
+
+ Threshold  Probability
+      0.00       1.0000

@@ -8540,7 +8540,7 @@ Champion fitness: [50.4433]
 ******************************Best Individual In Population*******************************
 
 Population Index: 0
-Iteration Index: 319
+Iteration Index: 506
 Decision vector: [0. 1. 0. 0. 1. 0. 0. 1. 0. 1. 0. 1. 0. 0. 1. 1. 0. 0. 0. 0. 0. 0. 1. 0.
  0. 1. 0. 0. 1. 1. 0. 0. 0. 0. 1. 0. 1. 1. 0. 1. 1. 1. 1. 0. 1. 1. 0. 0.
  0. 1. 1. 0. 0. 0. 0. 0. 0. 0. 1. 1. 0. 1. 0. 1. 0. 0. 1. 1. 0. 0. 0. 0.
@@ -8550,7 +8550,7 @@ Fitness vector: [50.4433]
 
 *****************Best Individual That Ever Lived In Population (Champion)*****************
 
-Iteration Index of Champion X*: 319
+Iteration Index of Champion X*: 506
 Decision vector: [0. 1. 0. 0. 1. 0. 0. 1. 0. 1. 0. 1. 0. 0. 1. 1. 0. 0. 0. 0. 0. 0. 1. 0.
  0. 1. 0. 0. 1. 1. 0. 0. 0. 0. 1. 0. 1. 1. 0. 1. 1. 1. 1. 0. 1. 1. 0. 0.
  0. 1. 1. 0. 0. 0. 0. 0. 0. 0. 1. 1. 0. 1. 0. 1. 0. 0. 1. 1. 0. 0. 0. 0.
