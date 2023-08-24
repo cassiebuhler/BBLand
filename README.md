@@ -1,9 +1,12 @@
 
 # Decision-Making for Land Conservation: A Derivative-Free Optimization Framework with Nonlinear Inputs
 
-This software is a mathematical programming tool for conservationists that allows for nonlinear inputs and can be paired with existing ecological software. 
+This software is a mathematical programming tool for conservationists that allows for linear and nonlinear inputs, continuous and discrete variables, and can be paired with existing ecological software.
 
 We propose a derivative-free optimization framework paired with a nonlinear component, population viability analysis (PVA). Formulated as a mixed integer nonlinear programming (MINLP) problem, our model allows for linear and nonlinear inputs. In its current form, we have [RAMAS Metapopulation](https://www.ramas.com/metapop-6-0) PVA software as the input. RAMAS is commercial software that requires a license to use. Our code invokes RAMAS using batch files, so we are able to provide all the source code. However, unless RAMAS is installed on your machine, this code won't run. 
+
+Please refer to the paper for further details: https://arxiv.org/abs/2308.11549
+
 
 ## How to Use
 Run *driver_.py*.
