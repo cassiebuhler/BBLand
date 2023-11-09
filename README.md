@@ -174,4 +174,9 @@ The metrics we used are found in the files:
 *  Time to extinction (QuasiExt)
 
 
+For an illustration of the framework components and their corresponding file output, refer to the following flowchart:
+<p align="center">
+  <img src="bblandProcess.png" width="350" title="code flowchart">
+</p>
+
 
