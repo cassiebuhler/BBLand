@@ -5,7 +5,7 @@ This software is a mathematical programming tool for conservationists that allow
 
 We propose a derivative-free optimization framework paired with a nonlinear component, population viability analysis (PVA). Formulated as a mixed integer nonlinear programming (MINLP) problem, our model allows for linear and nonlinear inputs. In its current form, we have [RAMAS Metapopulation](https://www.ramas.com/metapop-6-0) PVA software as the input. RAMAS is commercial software that requires a license to use. Our code invokes RAMAS using batch files, so we are able to provide all the source code. However, unless RAMAS is installed on your machine, this code won't run. 
 
-This repository includes our code, data, and [technical appendix](https://github.com/cassiebuhler/BBLand/blob/main/technical_appendix.pdf).
+This repository includes our code, data, and [technical appendix](https://github.com/cassiebuhler/BBLand/blob/main/Buhler2024_TechnicalAppendix.pdf).
 
 Please refer to the paper for further details: https://arxiv.org/abs/2308.11549
 
