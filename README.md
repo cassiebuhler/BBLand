@@ -1,6 +1,8 @@
 
 # Decision-Making for Land Conservation: A Derivative-Free Optimization Framework with Nonlinear Inputs
 
+[![DOI](https://zenodo.org/badge/663126349.svg)](https://zenodo.org/doi/10.5281/zenodo.13742960)
+
 This software is a mathematical programming tool for conservationists that allows for linear and nonlinear inputs, continuous and discrete variables, and can be paired with existing ecological software.
 
 We propose a derivative-free optimization framework paired with a nonlinear component, population viability analysis (PVA). Formulated as a mixed integer nonlinear programming (MINLP) problem, our model allows for linear and nonlinear inputs. In its current form, we have [RAMAS Metapopulation](https://www.ramas.com/metapop-6-0) PVA software as the input. RAMAS is commercial software that requires a license to use. Our code invokes RAMAS using batch files, so we are able to provide all the source code. However, unless RAMAS is installed on your machine, this code won't run. 
