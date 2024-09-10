@@ -9,7 +9,7 @@ We propose a derivative-free optimization framework paired with a nonlinear comp
 
 This repository includes our code, data, and [technical appendix](https://github.com/cassiebuhler/conservation-dfo/blob/main/technical-appendix.pdf).
 
-Please refer to the paper for further details: https://arxiv.org/abs/2308.11549
+Please refer to the paper for further details: https://doi.org/10.1609/aaai.v38i20.30195.
 
 
 ## How to Use
